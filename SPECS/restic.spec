@@ -17,9 +17,10 @@ restic is a backup program that is fast, efficient and secure.
 %autosetup
 
 %build
-go run build.go
 #Gzip man pages
-gzip %{_builddir}/%{name}-%{version}/doc/man/*
+/usr/bin/gzip %{_builddir}/%{name}-%{version}/doc/man/*
+#build binary
+go run build.go
 
 %install
 mkdir -p %{buildroot}%{_bindir}

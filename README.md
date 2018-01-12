@@ -13,5 +13,6 @@ Install
 RPMs are built on COPR
 
 sudo dnf copr enable copart/restic
+
 sudo dnf install restic
 

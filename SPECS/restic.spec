@@ -1,6 +1,6 @@
 Name:    restic
-Version: 0.8.1
-Release: 2%{?dist}
+Version: 0.8.2
+Release: 1%{?dist}
 Summary: Backup program
 URL:     https://restic.net
 License: BSD
@@ -48,6 +48,8 @@ install -p -m 644 %{_builddir}/%{name}-%{version}/CHANGELOG.md %{buildroot}%{_da
 %license LICENSE
 
 %changelog
+* Tue Feb 20 2018 Steve Miller <copart@gmail.com> - 0.8.2-1
+- Bumped restic version
 * Fri Jan 12 2018 Steve Miller <copart@gmail.com> - 0.8.1-2
 - Added man pages
 - Added bash completion

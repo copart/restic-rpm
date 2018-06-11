@@ -1,11 +1,11 @@
 Name:    restic
-Version: 0.9.0
+Version: 0.9.1
 Release: 1%{?dist}
 Summary: Backup program
 URL:     https://restic.net
 License: BSD
 
-BuildRequires: golang
+BuildRequires: golang >= 1.9
 Source0: https://github.com/restic/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 %define debug_package %{nil}
@@ -48,9 +48,11 @@ install -p -m 644 %{_builddir}/%{name}-%{version}/CHANGELOG.md %{buildroot}%{_da
 %license LICENSE
 
 %changelog
+* Sun Jun 10 2018 Steve Miller <copart@gmail.com> - 0.9.1-1
+- Bumped restic version
 * Sun May 27 2018 Steve Miller <copart@gmail.com> - 0.9.0-1
 - Bumped restic version
-* Mon Mar 04 2018 Steve Miller <copart@gmail.com> - 0.8.3-1
+* Sun Mar 04 2018 Steve Miller <copart@gmail.com> - 0.8.3-1
 - Bumped restic version
 * Tue Feb 20 2018 Steve Miller <copart@gmail.com> - 0.8.2-1
 - Bumped restic version

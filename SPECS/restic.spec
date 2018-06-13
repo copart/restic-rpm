@@ -1,10 +1,11 @@
 Name:    restic
 Version: 0.9.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Backup program
 URL:     https://restic.net
 License: BSD
 
+ExcludeArch: ppc64
 BuildRequires: golang >= 1.9
 Source0: https://github.com/restic/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
@@ -48,6 +49,8 @@ install -p -m 644 %{_builddir}/%{name}-%{version}/CHANGELOG.md %{buildroot}%{_da
 %license LICENSE
 
 %changelog
+* Wed Jun 13 2018 Steve Miller <copart@gmail.com> - 0.9.1-2
+- Added ppc64 to ExcludeArch, no go for this architecture
 * Sun Jun 10 2018 Steve Miller <copart@gmail.com> - 0.9.1-1
 - Bumped restic version
 * Sun May 27 2018 Steve Miller <copart@gmail.com> - 0.9.0-1

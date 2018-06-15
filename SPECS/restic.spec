@@ -1,56 +1,141 @@
+# https://github.com/restic/restic
+%global goipath         github.com/restic/restic
+Version:                0.9.1
+
+#The following is here to allow support of building for Copr EPEL until the newer Go Macro support is added to RHEL/EPEL
+%if 0%{?fe4dora:1}
+%global UseGoMacros 1
+%else
+%global UseGoMacros 0
+#stops rpmbuild from complaining about empty debug files
+%global debug_package %{nil}
+%endif
+
+%gometa
+
 Name:    restic
-Version: 0.9.1
 Release: 2%{?dist}
-Summary: Backup program
-URL:     https://restic.net
+Summary: Fast, secure, efficient backup program
+URL:     %{gourl}
 License: BSD
+Source0: https://%{goipath}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 ExcludeArch: ppc64
-BuildRequires: golang >= 1.9
-Source0: https://github.com/restic/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
-%define debug_package %{nil}
+%if %{UseGoMacros}
+BuildRequires: golang(bazil.org/fuse)
+BuildRequires: golang(bazil.org/fuse/fs)
+BuildRequires: golang(github.com/Azure/azure-sdk-for-go/storage)
+BuildRequires: golang(github.com/cenkalti/backoff)
+BuildRequires: golang(github.com/elithrar/simple-scrypt)
+BuildRequires: golang(github.com/juju/ratelimit)
+BuildRequires: golang(github.com/kurin/blazer/b2)
+BuildRequires: golang(github.com/mattn/go-isatty)
+BuildRequires: golang(github.com/minio/minio-go)
+BuildRequires: golang(github.com/minio/minio-go/pkg/credentials)
+BuildRequires: golang(github.com/ncw/swift)
+BuildRequires: golang(github.com/pkg/errors)
+BuildRequires: golang(github.com/pkg/sftp)
+BuildRequires: golang(github.com/pkg/xattr)
+BuildRequires: golang(github.com/restic/chunker)
+BuildRequires: golang(golang.org/x/crypto/poly1305)
+BuildRequires: golang(golang.org/x/crypto/scrypt)
+BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
+BuildRequires: golang(golang.org/x/net/context)
+BuildRequires: golang(golang.org/x/net/context/ctxhttp)
+BuildRequires: golang(golang.org/x/net/http2)
+BuildRequires: golang(golang.org/x/oauth2/google)
+BuildRequires: golang(golang.org/x/sync/errgroup)
+BuildRequires: golang(golang.org/x/sys/unix)
+BuildRequires: golang(golang.org/x/text/encoding/unicode)
+BuildRequires: golang(google.golang.org/api/googleapi)
+BuildRequires: golang(google.golang.org/api/storage/v1)
+BuildRequires: golang(gopkg.in/tomb.v2)
+#for check/testing
+BuildRequires: golang(github.com/google/go-cmp/cmp)
+%else
+BuildRequires: golang >= 1.9
+%endif
+#COMMON
+#Soft dependency for mounting , ie: fusemount
+Requires: fuse
+
 
 %description
-restic is a backup program that is fast, efficient and secure.
+restic is a backup program that is easy, fast, verifiable, secure, efficient and free.
+
+Backup destinations can be:
+*Local
+*SFTP
+*REST Server
+*Amazon S3
+*Minio Server
+*OpenStack Swift
+*Backblaze B2
+*Microsoft Azure Blob Storage
+*Google Cloud Storage
+*Other Services via rclone
+
 
 %prep
+%if %{UseGoMacros}
+%gosetup -q
+%else
 %autosetup
+%endif
 
-%build
-#Gzip man pages
-/usr/bin/gzip %{_builddir}/%{name}-%{version}/doc/man/*
-#build binary
-go run build.go
+%build 
+%if %{UseGoMacros}
+%gobuildroot
+%gobuild -o _bin/%{name} %{goipath}/cmd/restic
+%else
+go run build.go --enable-pie
+%endif
 
 %install
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_mandir}/man1
 mkdir -p %{buildroot}%{_datarootdir}/zsh/site-functions
 mkdir -p %{buildroot}%{_datarootdir}/bash-completion/completions
-mkdir -p %{buildroot}%{_datarootdir}/doc/restic
-install -p -m 755 %{_builddir}/%{name}-%{version}/%{name} %{buildroot}%{_bindir}
-install -p -m 644 %{_builddir}/%{name}-%{version}/doc/man/* %{buildroot}%{_mandir}/man1/
+install -p -m 644 doc/man/* %{buildroot}%{_mandir}/man1/
 #zsh completion
-install -p -m 644 %{_builddir}/%{name}-%{version}/doc/zsh-completion.zsh %{buildroot}%{_datarootdir}/zsh/site-functions/_restic
+install -p -m 644 doc/zsh-completion.zsh %{buildroot}%{_datarootdir}/zsh/site-functions/_restic
 #Bash completion
-install -p -m 644 %{_builddir}/%{name}-%{version}/doc/bash-completion.sh %{buildroot}%{_datarootdir}/bash-completion/completions/restic
-#Doc
-install -p -m 644 %{_builddir}/%{name}-%{version}/README.rst %{buildroot}%{_datarootdir}/doc/restic/
-install -p -m 644 %{_builddir}/%{name}-%{version}/CHANGELOG.md %{buildroot}%{_datarootdir}/doc/restic/
+install -p -m 644 doc/bash-completion.sh %{buildroot}%{_datarootdir}/bash-completion/completions/restic
+%if %{UseGoMacros}
+install -p -m 755 _bin/%{name} %{buildroot}%{_bindir}
+%else
+install -p -m 755 %{name} %{buildroot}%{_bindir}
+%endif
 
-%files
-%{_bindir}/%{name}
-%{_datarootdir}/zsh/site-functions/_restic
-%{_datarootdir}/bash-completion/completions/restic
-%doc %{_mandir}/man1/restic*.gz
-%doc %{_datarootdir}/doc/restic
+%check
+#Requires root to test fuse
+export RESTIC_TEST_FUSE=0
+%if %{UseGoMacros}
+#check from Makefile
+#	go test ./cmd/... ./internal/...
+%gochecks cmd internal
+#%else
+#export GOPATH=/usr/share/gocode/src:%{gopath}
+#go test ./cmd/... ./internal/...
+%endif
 
+%files 
 %license LICENSE
+%doc GOVERNANCE.md CONTRIBUTING.md CHANGELOG.md README.rst
+%{_bindir}/%{name}
+%dir %{_datadir}/zsh/site-functions
+%{_datadir}/zsh/site-functions/_restic
+%dir %{_datadir}/bash-completion/
+%dir %{_datadir}/bash-completion/completions
+%{_datadir}/bash-completion/completions/restic
+%{_mandir}/man1/restic*.*
 
 %changelog
 * Wed Jun 13 2018 Steve Miller <copart@gmail.com> - 0.9.1-2
 - Added ppc64 to ExcludeArch, no go for this architecture
+- First package for Fedora
+- Rework using More Go packaging
 * Sun Jun 10 2018 Steve Miller <copart@gmail.com> - 0.9.1-1
 - Bumped restic version
 * Sun May 27 2018 Steve Miller <copart@gmail.com> - 0.9.0-1

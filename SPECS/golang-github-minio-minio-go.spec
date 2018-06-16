@@ -1,5 +1,6 @@
 # https://github.com/minio/minio-go
 %global goipath         github.com/minio/minio-go
+Version:	6.0.2
 
 %global common_description %{expand:
 The Minio Go Client SDK provides simple APIs to access any Amazon S3 compatible
@@ -13,7 +14,6 @@ Client API Reference.}
 %gometa -i
 
 Name:		%{goname}
-Version:	6.0.2
 Release:	1%{?dist}
 Summary:	Minio Client SDK for Go
 License:	ASL 2.0

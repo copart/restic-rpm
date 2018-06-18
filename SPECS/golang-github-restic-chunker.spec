@@ -1,22 +1,24 @@
 # https://github.com/restic/chunker
 %global goipath github.com/restic/chunker
+Version:        0.2.0
 
 %global common_description %{expand:
-The Minio Go Client SDK provides simple APIs to access any Amazon S3 compatible object storage.
+The Minio Go Client SDK provides simple APIs to access any Amazon S3 compatible
+object storage.
 
-This quickstart guide will show you how to install the Minio client SDK, connect to Minio, 
-and provide a walkthrough for a simple file uploader. For a complete list of APIs and examples, 
-please take a look at the Go Client API Reference.}
+This quickstart guide will show you how to install the Minio client SDK, 
+connect to Minio, and provide a walkthrough for a simple file uploader. 
+For a complete list of APIs and examples, please take a look at the Go 
+Client API Reference.}
 
 %gometa -i
 
-Name:           %{goname}
-Version:        0.2.0
-Release:        1%{?dist}
-Summary:        Implementation of Content Defined Chunking (CDC) in Go
-License:        BSD
-URL:            %{gourl}
-Source0:        https://%{goipath}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Name:       %{goname}
+Release:    1%{?dist}
+Summary:    Implementation of Content Defined Chunking (CDC) in Go
+License:    BSD
+URL:        %{gourl}
+Source0:    https://%{goipath}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 
 

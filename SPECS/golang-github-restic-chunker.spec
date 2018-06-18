@@ -3,13 +3,8 @@
 Version:        0.2.0
 
 %global common_description %{expand:
-The Minio Go Client SDK provides simple APIs to access any Amazon S3 compatible
-object storage.
-
-This quickstart guide will show you how to install the Minio client SDK, 
-connect to Minio, and provide a walkthrough for a simple file uploader. 
-For a complete list of APIs and examples, please take a look at the Go 
-Client API Reference.}
+The package chunker implements content-defined-chunking (CDC) based on a 
+rolling Rabin Hash. The library is part of the restic backup program.}
 
 %gometa -i
 

@@ -1,16 +1,15 @@
 # https://github.com/pkg/xattr
-%global goipath         github.com/pkg/xattr
+%global goipath github.com/pkg/xattr
+Version:        0.3.0
 
 %gometa -i
 
 Name:           %{goname}
-Version:        0.3.0
 Release:        1%{?dist}
-Summary:        Extended attribute support for Go (linux + darwin + freebsd) 
+Summary:        Extended attribute support library for Go
 License:        BSD
 URL:            %{gourl}
 Source0:        https://%{goipath}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-
 
 
 %description
@@ -48,6 +47,6 @@ building other packages which use import path with
 %doc README.md
 
 %changelog
-* Thu Jun 14 2018 Steve Miller (copart) <code@rellims.com> <copart@gmail.com> - 0.3.0-1
+* Thu Jun 14 2018 Steve Miller (copart) <code@rellims.com> - 0.3.0-1
 - First package for Fedora
 

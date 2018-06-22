@@ -44,6 +44,8 @@ building other packages which use import path with
 %prep
 %gosetup -q
 
+%build
+#N/A
 
 %install
 %goinstall
@@ -63,7 +65,7 @@ building other packages which use import path with
 %doc README.md
 
 %changelog
-* Wed Jun 22 2018 Steve Miller (copart) <code@rellims.com> - 1.3.0-2
+* Fri Jun 22 2018 Steve Miller (copart) <code@rellims.com> - 1.3.0-2
 - Removed tests for s390x arch
 
 * Wed Jun 13 2018 Steve Miller (copart) <code@rellims.com> - 1.3.0-1

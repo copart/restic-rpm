@@ -1,6 +1,6 @@
 # https://github.com/elithrar/simple-scrypt
 %global goipath         github.com/elithrar/simple-scrypt
-Version:        1.3.0
+Version:   1.3.0
 
 %global common_description %{expand:
 simple-scrypt provides a convenience wrapper around Go's existing scrypt 
@@ -43,9 +43,6 @@ building other packages which use import path with
 
 %prep
 %gosetup -q
-
-%build
-#N/A
 
 %install
 %goinstall

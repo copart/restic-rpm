@@ -19,7 +19,7 @@ migrate—and because it's an easy to grok API.}
 %gometa -i
 
 Name:      %{goname}
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Go Library for password hashes using the scrypt KDF
 License:   MIT
 URL:       %{gourl}
@@ -49,7 +49,11 @@ building other packages which use import path with
 %goinstall
 
 %check
+#The timing / calibration tests are non-deterministic, 
+#see https://github.com/elithrar/simple-scrypt/issues/16
+%ifnarch s390x
 %gochecks
+%endif
 
 #define license tag if not already defined
 %{!?_licensedir:%global license %doc}
@@ -59,5 +63,8 @@ building other packages which use import path with
 %doc README.md
 
 %changelog
+* Wed Jun 22 2018 Steve Miller (copart) <code@rellims.com> - 1.3.0-2
+- Removed tests for s390x arch
+
 * Wed Jun 13 2018 Steve Miller (copart) <code@rellims.com> - 1.3.0-1
 - First package for Fedora

@@ -2,13 +2,15 @@
 %global goipath         github.com/restic/restic
 Version:                0.9.1
 
-#The following is here to allow support of building for Copr EPEL until the newer Go Macro support is added to RHEL/EPEL
-%if 0%{?fe4dora:1}
+#The following is here to allow support of building for Copr EPEL until the
+#newer Go Macro support is added to RHEL/EPEL
+%if 0%{?fedora:1}
 %global UseGoMacros 1
 %else
 %global UseGoMacros 0
 #stops rpmbuild from complaining about empty debug files
 %global debug_package %{nil}
+%global gometa %{nil}
 %endif
 
 %gometa
@@ -58,7 +60,7 @@ BuildRequires: golang >= 1.9
 %endif
 #COMMON
 #Soft dependency for mounting , ie: fusemount
-Requires: fuse
+#Requires: fuse
 
 
 %description
@@ -109,15 +111,10 @@ install -p -m 755 %{name} %{buildroot}%{_bindir}
 %endif
 
 %check
-#Requires root to test fuse
+#Skip tests using fuse due to root requirement
 export RESTIC_TEST_FUSE=0
 %if %{UseGoMacros}
-#check from Makefile
-#	go test ./cmd/... ./internal/...
 %gochecks cmd internal
-#%else
-#export GOPATH=/usr/share/gocode/src:%{gopath}
-#go test ./cmd/... ./internal/...
 %endif
 
 %files 

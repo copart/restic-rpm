@@ -1,6 +1,6 @@
 # https://github.com/minio/minio-go
 %global goipath         github.com/minio/minio-go
-Version:	6.0.2
+Version:	6.0.4
 
 %global common_description %{expand:
 The Minio Go Client SDK provides simple APIs to access any Amazon S3 compatible
@@ -11,7 +11,7 @@ connect to Minio, and provide a walkthrough for a simple file uploader.
 For a complete list of APIs and examples, please take a look at the Go 
 Client API Reference.}
 
-%gometa -i
+%gometa
 
 Name:		%{goname}
 Release:	1%{?dist}
@@ -61,5 +61,7 @@ building other packages which use import path with
 %doc README_zh_CN.md CONTRIBUTING.md MAINTAINERS.md README.md
 
 %changelog
+* Sun Jun 24 2018 Steve Miller (copart) <code@rellims.com> - 6.0.4-1
+- Bumped upstream version, bug fixe release
 * Thu Jun 14 2018 Steve Miller (copart) <code@rellims.com> - 6.0.2-1
 - First package for Fedora

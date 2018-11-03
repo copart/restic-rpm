@@ -1,6 +1,6 @@
 # https://github.com/restic/restic
 %global goipath         github.com/restic/restic
-Version:                0.9.2
+Version:                0.9.3
 
 #The following is here to allow support of building for Copr EPEL until the
 #newer Go Macro support is added to RHEL/EPEL
@@ -130,6 +130,9 @@ export RESTIC_TEST_FUSE=0
 %{_mandir}/man1/restic*.*
 
 %changelog
+* Sat Nov 3 2018 Steve Miller <copart@gmail.com> - 0.9.3-1
+- Bumped restic version
+
 * Thu Aug 9 2018 Steve Miller <copart@gmail.com> - 0.9.2-1
 - Bumped restic version
 

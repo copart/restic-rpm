@@ -1,6 +1,6 @@
 # https://github.com/restic/restic
 %global goipath         github.com/restic/restic
-Version:                0.9.3
+Version:                0.9.5
 
 #The following is here to allow support of building for Copr EPEL until the
 #newer Go Macro support is added to RHEL/EPEL
@@ -16,9 +16,9 @@ Version:                0.9.3
 %gometa
 
 Name:    restic
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Fast, secure, efficient backup program
-URL:     %{gourl}
+URL:     https://restic.net
 License: BSD
 Source0: https://%{goipath}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
@@ -57,6 +57,9 @@ BuildRequires: golang(gopkg.in/tomb.v2)
 BuildRequires: golang(github.com/google/go-cmp/cmp)
 %else
 BuildRequires: golang >= 1.9
+%endif
+%if 0%{?rhel} && 0%{?rhel} <= 6
+BuildRequires: git >= 1.9
 %endif
 #COMMON
 #Soft dependency for mounting , ie: fusemount
@@ -130,6 +133,14 @@ export RESTIC_TEST_FUSE=0
 %{_mandir}/man1/restic*.*
 
 %changelog
+* Tue Apr 23 2019 Steve Miller <copart@gmail.com> - 0.9.5-1
+- Bumped restic version
+
+* Sun Feb 10 2019 Steve Miller <copart@gmail.com> - 0.9.4-1
+- External git copr repository for build added, will be used 
+  for epel 6 install.
+- Bumped restic version
+
 * Sat Nov 3 2018 Steve Miller <copart@gmail.com> - 0.9.3-1
 - Bumped restic version
 
